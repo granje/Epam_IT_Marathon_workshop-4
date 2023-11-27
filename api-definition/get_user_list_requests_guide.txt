@@ -1,0 +1,55 @@
+GET (with Cognito)
+/users
+-> all users not paginated without filters
+
+GET (with Cognito)
+/users?limit=2&hashkey=john1002@mail.ua
+-> all users paginated without filters
+
+
+POST (open)
+/match
+body=null
+-> all users not paginated without filters
+
+POST
+/match?limit=2&hashkey=john1002@mail.ua
+body=null
+-> all users paginated without filters
+
+POST
+/match?limit=2&hashkey=john1000@mail.ua&rangekey=last.user.name
+body=
+{
+    "name": "Alan"
+}
+-> all users paginated (from the first page) with filter: name <begins with> "Alan" 
+# rangekey = "" -> from the first page
+# rangekey = "name" value of the last user on the page or NULL("")
+
+POST
+/match?limit=2&hashkey=john1000@mail.ua&rangekey=
+body=
+{
+    "location": "Ukraine, Kyiv"
+}
+-> all users paginated with filter: location <begins with> "Ukraine, Kyiv"
+# rangekey = "" -> from the first page
+# rangekey = "location" value of the last user on the page or NULL("") 
+
+
+POST
+/match?limit=2&hashkey=john1002@mail.ua&rangekey=
+body=
+{
+    "ageLimits": [
+        "25",
+        "40"
+    ]
+}
+-> all users paginated with filter: age <between> 25 and 40
+# rangekey = "" -> from the first page
+# rangekey = "birthday" value of the last user on the page or NULL("") 
+
+If the error occures because of the issues with "hashkey" or "rangekey":
+-> error message is produced

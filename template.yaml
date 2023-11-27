@@ -1,0 +1,353 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  dynamo-db-crud
+
+  Sample SAM Template for dynamo-db-crud
+Globals:
+  Function:
+    Timeout: 20
+
+Parameters:
+  ExampleTableArn:
+    Description: Example DynamoDB table ARN
+    Type: String
+    Default: arn:aws:dynamodb:eu-central-1:564197922604:table/it-marathon-v3-user-db
+  NameIndexTableArn:
+    Description: Index DynamoDB table ARN
+    Type: String
+    Default: arn:aws:dynamodb:eu-central-1:564197922604:table/it-marathon-v3-user-db/index/country-name-index
+  BirthIndexTableArn:
+    Description: Index DynamoDB table ARN
+    Type: String
+    Default: arn:aws:dynamodb:eu-central-1:564197922604:table/it-marathon-v3-user-db/index/country-birthday-index
+  LocIndexTableArn:
+    Description: Index DynamoDB table ARN
+    Type: String
+    Default: arn:aws:dynamodb:eu-central-1:564197922604:table/it-marathon-v3-user-db/index/country-location-index
+  RegIndexTableArn:
+    Description: Index DynamoDB table ARN
+    Type: String
+    Default: arn:aws:dynamodb:eu-central-1:564197922604:table/it-marathon-v3-user-db/index/country-registration-index
+
+Resources:
+
+  GetUserListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.GetUserListFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: ExampleTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: LocIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: BirthIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: RegIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: NameIndexTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: GET
+
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.CreateUserFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: ExampleTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HttpRequest:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: POST
+
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.UpdateUserFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: ExampleTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HttpRequest:
+          Type: Api
+          Properties:
+            Path: /users/{email}
+            Method: PUT
+
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.DeleteUserFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: ExampleTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HttpRequest:
+          Type: Api
+          Properties:
+            Path: /users/{email}
+            Method: DELETE
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.GetUserFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource: {Ref: ExampleTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HttpRequest:
+          Type: Api
+          Properties:
+            Path: /users/{email}
+            Method: GET
+
+  GetUserListByQueryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DynamoDBApp/
+      Handler: handler.GetUserListByQueryFunction::handleRequest
+      Layers: # A list of layers to add to your function
+        - !Ref CommonLayer # A reference to the layer defined below
+      Runtime: java11
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: ExampleTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: LocIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: BirthIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: RegIndexTableArn}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: {Ref: NameIndexTableArn}
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        HttpRequest:
+          Type: Api
+          Properties:
+            Path: /match
+            Method: POST
+
+  CommonLayer: # The name of your layer
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: CommonLayer # A name for your layer
+      Description: A sample layer for Java # A description for your layer
+      ContentUri: DynamoDBApp/target/ # The directory that contains your layer content
+      CompatibleRuntimes: # A list of runtimes compatible with your layer
+        - java11
+      LicenseInfo: MIT # The license information for your layer
+      RetentionPolicy: Retain # The retention policy for your layer
+
+
+Outputs:
+  HttpRequestApi:
+    Description: "API Gateway endpoint URL for Prod stage for DynamoDB lambda functions"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  DynamoDBTableName:
+    Value: {Ref: ExampleTableArn}
+    Description: DynamoDB Table Name

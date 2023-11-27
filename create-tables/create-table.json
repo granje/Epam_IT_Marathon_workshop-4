@@ -1,0 +1,122 @@
+{
+  "TableName": "it-marathon-v3-user-db",
+  "KeySchema": [
+    {
+      "KeyType": "HASH",
+      "AttributeName": "email"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "email",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "name",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "location",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "birthday",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "registration",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "country",
+      "AttributeType": "S"
+    }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "country-name-index",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      },
+      "KeySchema": [
+        {
+          "AttributeName": "country",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "name",
+          "KeyType": "RANGE"
+        }
+      ]
+    },
+    {
+      "IndexName": "country-birthday-index",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      },
+      "KeySchema": [
+        {
+          "AttributeName": "country",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "birthday",
+          "KeyType": "RANGE"
+        }
+      ]
+    },
+    {
+      "IndexName": "country-location-index",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      },
+      "KeySchema": [
+        {
+          "AttributeName": "country",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "location",
+          "KeyType": "RANGE"
+        }
+      ]
+    },
+    {
+      "IndexName": "country-registration-index",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      },
+      "KeySchema": [
+        {
+          "AttributeName": "country",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "registration",
+          "KeyType": "RANGE"
+        }
+      ]
+    }
+  ],
+  "BillingMode": "PROVISIONED",
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}
